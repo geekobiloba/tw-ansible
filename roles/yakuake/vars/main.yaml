@@ -1,0 +1,7 @@
+# vars for yakuake role
+
+nerdfont:
+  version:  v3.2.1
+  checksum: >-
+    sha256:89b9023f3f6d5e4b8040022ff29b36faee440cf49015fda163215c922569b5f3
+

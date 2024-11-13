@@ -1,0 +1,13 @@
+# tasks for homebin tasks
+
+- name: Install local scripts
+  copy:
+    src:  "{{ item }}"
+    dest: ${HOME}/bin/{{ item }}
+  loop:
+    - ipinfo
+    - detrail
+    - asinfo
+    - pdfcat
+    - zsh-colors
+

@@ -1,0 +1,7 @@
+[security_tls]
+name=security:tls (openSUSE_Tumbleweed)
+type=rpm-md
+baseurl=https://download.opensuse.org/repositories/security:/tls/openSUSE_Tumbleweed/
+gpgcheck=1
+gpgkey=https://download.opensuse.org/repositories/security:/tls/openSUSE_Tumbleweed/repodata/repomd.xml.key
+enabled=1

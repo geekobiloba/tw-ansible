@@ -1,0 +1,23 @@
+# tasks for zram role
+
+- name: Installing zram tools
+  become: true
+  package:
+    name:
+      - zram-generator
+      - systemd-zram-service
+
+- name: Installing zram config
+  become: true
+  copy:
+    src:   zram-generator.conf
+    dest:  /etc/systemd/zram-generator.conf
+    mode:  "0644"
+
+- name: Enabling & starting zram device
+  become: true
+  systemd_service:
+    name:          /dev/zram0
+    state:         started
+    daemon_reload: true
+

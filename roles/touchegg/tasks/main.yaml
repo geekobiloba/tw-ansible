@@ -1,0 +1,24 @@
+# tasks for touchegg role
+
+- name: Installing touchegg
+  become: true
+  package:
+    name: touchegg
+
+- name: Installing touchegg config
+  copy:
+    src:  touchegg.conf
+    dest: ~/.config/touchegg/touchegg.conf
+    mode: "0644"
+
+- name: Enabling touchegg service
+  become: true
+  service:
+    name:    touchegg
+    enabled: true
+
+- name: Installing touche
+  community.general.flatpak:
+    name:   com.github.joseexposito.touche
+    method: user
+

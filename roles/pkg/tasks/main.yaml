@@ -1,0 +1,36 @@
+# tasks for pkg role
+
+- name: Installing global packages
+  become: true
+  package:
+    name: "{{
+          pkg.general
+        + pkg.system
+        + pkg.network
+        + pkg.hardware
+        + pkg.proglang
+        + pkg.doctool
+        + pkg.completion
+        + pkg.browser
+      }}"
+
+- name: Setting flatpak packages
+  block:
+
+    - name: Installing flatpak remote
+      community.general.flatpak_remote:
+        name:            flathub
+        method:          user
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+    - name: Installing flatpak packages
+      community.general.flatpak:
+        name:   "{{ pkg.flatpak }}"
+        method: user
+
+- name: Installing dnstop
+  include_tasks: dnstop.yaml
+
+- name: Installing jc
+  include_tasks: jc.yaml
+

@@ -1,0 +1,38 @@
+# jc tasks for pkg role
+
+- name: Installing jc
+  become: true
+  package:
+    name: jc
+
+# Install jc completion idempotently
+
+- name: Ensuring /etc/zsh_completion.d/ directory existence
+  file:
+    path:  /etc/zsh_completion.d
+    mode:  "0755"
+    state: directory
+
+- name: Creating temporary file
+  changed_when: false
+  tempfile:
+    state: file
+  register: tmpfile
+
+- name: Generating jc completion file
+  changed_when: false
+  shell: jc -Z > {{ tmpfile.path }}
+
+- name: Installing jc completion file
+  become: true
+  copy:
+    src:  "{{ tmpfile.path }}"
+    dest: /etc/zsh_completion.d/jc
+    mode: "0644"
+
+- name: Deleting temporary file
+  changed_when: false
+  file:
+    path:  "{{ tmpfile.path }}"
+    state: absent
+

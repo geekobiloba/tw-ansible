@@ -1,0 +1,62 @@
+- name: openSUSE Tumbleweed desktop setup
+  hosts: all
+  vars:
+    admin_user: "{{
+        lookup('env', 'USER')
+        if
+          ansible_host == 'localhost'
+            and
+          ansible_connection == 'local'
+        else
+          ansible_user
+      }}"
+  roles:
+
+    - role: sudo
+      tags:
+        - sudo
+        - never
+
+    - role: zypper
+      tags:
+        - zypper
+
+    - role: zsh
+      tags:
+        - zsh
+
+    - role: pkg
+      tags:
+        - pkg
+
+    - role: yakuake
+      tags:
+        - yakuake
+
+    - role: powershell
+      tags:
+        - powershell
+
+    - role: homebin
+      tags:
+        - homebin
+        - never
+
+    - role: wine
+      tags:
+        - wine
+        - never
+
+    - role: desktop
+      tags:
+        - desktop
+        - never
+
+    - role: touchegg
+      tags:
+        - touchegg
+
+    - role: zram
+      tags:
+        - zram
+

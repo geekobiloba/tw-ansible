@@ -1,0 +1,55 @@
+# atsks for powershell role
+
+- name: packages-microsoft-com-prod repo
+  become: true
+  block:
+
+    - name: Importing Microsoft GPG key
+      rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+
+    - name: Installing packages-microsoft-com-prod repo
+      get_url:
+        url:  https://packages.microsoft.com/config/opensuse/15/prod.repo
+        dest: /etc/zypp/repos.d/microsoft-prod.repo
+        mode: "0644"
+      register: microsoft_repo
+
+    - name: Setting packages-microsoft-com-prod repo
+      when: microsoft_repo.changed
+      shell: >-
+        zypper --non-interactive modifyrepo --enable --gpgcheck --refresh
+        packages-microsoft-com-prod
+        &&
+        zypper --non-interactive --gpg-auto-import-keys refresh
+        packages-microsoft-com-prod
+
+- name: security_tls repo
+  become: true
+  block:
+
+    - name: Installing security_tls repo
+      get_url:
+        url:  https://download.opensuse.org/repositories/security:tls/openSUSE_Tumbleweed/security:tls.repo
+        dest: /etc/zypp/repos.d/security:tls.repo
+        mode: "0644"
+      register: security_tls_repo
+
+    - name: Setting security_tls repo
+      when: security_tls_repo.changed
+      shell: >-
+        zypper --non-interactive modifyrepo --enable --gpgcheck --refresh security_tls
+        &&
+        zypper --non-interactive --gpg-auto-import-keys refresh security_tls
+
+- name: PowerShell
+  block:
+
+    - name: Installing .Net SDK
+      become: true
+      package:
+        name: dotnet-sdk-9.0
+
+    - name: Installing PowerShell
+      shell: dotnet tool install --global PowerShell
+

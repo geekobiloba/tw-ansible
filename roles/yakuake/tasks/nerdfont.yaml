@@ -1,0 +1,73 @@
+# tasks for nerdfont role
+
+- name: Ensuring local font directory existence
+  file:
+    path:    ~/.local/share/fonts/h
+    state:   directory
+    recurse: true
+  register: fontdir
+
+- name: Creating temporary directory
+  changed_when: false
+  tempfile:
+    state: directory
+  register: tempdir
+
+- name: Setting Nerd font variables
+  set_fact:
+    nerdfont_archive: "{{ [ tempdir.path, 'Hack.tar.xz' ] | path_join }}"
+    nerdfont_url: "{{
+        [
+          'https://github.com/ryanoasis/nerd-fonts/releases/download',
+          nerdfont.version,
+          'Hack.tar.xz'
+        ] | path_join
+      }}"
+
+- name: Downloading Nerd font archive
+  changed_when: false
+  get_url:
+    url:      "{{ nerdfont_url      }}"
+    dest:     "{{ nerdfont_archive  }}"
+    checksum: "{{ nerdfont.checksum }}"
+
+- name: Extracting Nerd font archive
+  changed_when: false
+  unarchive:
+    src:  "{{ nerdfont_archive }}"
+    dest: "{{ tempdir.path     }}"
+    exclude:
+      - README.md
+      - LICENSE.md
+    remote_src: true
+
+- name: Deleting Nerd font archive
+  changed_when: false
+  file:
+    path:  "{{ nerdfont_archive }}"
+    state: absent
+
+- name: Installing Nerd font files
+  copy:
+    src:  "{{ [ tempdir.path, item ] | path_join }}"
+    dest: "{{ [ '~/.local/share/fonts/h', item ] | path_join }}"
+  loop:
+    - HackNerdFont-Bold.ttf
+    - HackNerdFont-BoldItalic.ttf
+    - HackNerdFont-Italic.ttf
+    - HackNerdFont-Regular.ttf
+    - HackNerdFontMono-Bold.ttf
+    - HackNerdFontMono-BoldItalic.ttf
+    - HackNerdFontMono-Italic.ttf
+    - HackNerdFontMono-Regular.ttf
+    - HackNerdFontPropo-Bold.ttf
+    - HackNerdFontPropo-BoldItalic.ttf
+    - HackNerdFontPropo-Italic.ttf
+    - HackNerdFontPropo-Regular.ttf
+
+- name: Deleting temporary directory
+  changed_when: false
+  file:
+    path: "{{ tempdir.path }}"
+    state: absent
+

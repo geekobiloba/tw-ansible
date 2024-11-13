@@ -1,0 +1,17 @@
+[Appearance]
+HideSkinBorders=true
+TerminalHighlightOnManualActivation=true
+Translucency=true
+
+[Desktop Entry]
+DefaultProfile=myprofile.profile
+
+[Dialogs]
+FirstRun=false
+
+[Window]
+DynamicTabTitles=true
+Height=95
+KeepOpen=false
+ShowTitleBar=false
+Width=100

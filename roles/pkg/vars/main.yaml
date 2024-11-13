@@ -1,0 +1,104 @@
+# vars for pkg role
+
+pkg:
+
+  general:
+    - bat
+    - chezmoi
+    - dialog
+    - direnv
+    - duf
+    - expect
+    - eza
+    - fd
+    - gh
+    - git
+    - jq
+    - make
+    - mozilla-nss-tools # provide certutil
+    - ncdu
+    - neofetch
+    - neovim
+    - progress
+    - pyenv
+    - rclone
+    - ripgrep
+    - rsync
+    - scout
+    - screen
+    - tlrc # tldr clint in Rust
+    - tree
+    - yq
+    - zellij
+   #- scout-command-not-found # conflicts with cnf, which is already included
+
+  system:
+    - htop
+    - iotop-c
+    - smemstat
+    - sysstat
+    - sysstat-isag # graph sysstat data
+   #- smem
+
+  network:
+    - aria2
+    - bind-utils
+    - curl
+    - ethtool
+    - httpie
+    - iftop
+    - iperf
+    - mtr
+    - netcat-openbsd
+    - nmap
+    - nmap-parse-output
+    - socat
+    - socat-extra
+    - tcpdump
+    - telnet
+
+  hardware:
+    - inxi
+    - libinput-tools # debug touchpad gesture
+    - sensors
+    - smartmontools
+
+  proglang:
+    - chezscheme
+    - go
+    - juliaup
+
+  doctool:
+    - ImageMagick
+    - pandoc
+    - poppler-tools
+    - qpdf
+
+  completion:
+    - bat-zsh-completion
+    - curl-zsh-completion
+    - ethtool-bash-completion
+    - eza-zsh-completion
+    - fd-zsh-completion
+    - flatpak-zsh-completion
+    - gh-zsh-completion
+    - libsixel-zsh-completion
+    - progress-zsh-completion
+    - pyenv-zsh-completion
+    - rclone-zsh-completion
+    - ripgrep-zsh-completion
+    - smemstat-bash-completion
+    - yq-zsh-completion
+    - zellij-zsh-completion
+
+  browser:
+    - libsixel-utils
+    - w3m
+    - w3m-inline-image
+
+  flatpak:
+    - md.obsidian.Obsidian
+    - org.gimp.GIMP
+    - org.inkscape.Inkscape
+    - org.telegram.desktop
+

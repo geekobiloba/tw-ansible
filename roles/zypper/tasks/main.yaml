@@ -1,0 +1,42 @@
+# tasks for zypper role
+
+- name: Ensuring /usr/lib/zypper/commands/ directory existence
+  become: true
+  file:
+    mode:  "0755"
+    path:  /usr/lib/zypper/commands/
+    state: directory
+
+  # See: /etc/zypp/zypp.conf
+- name: Setting zypper autorefresh delay
+  become: true
+  copy:
+    src:  repo.refresh.delay
+    dest: /etc/zypp/vars.d/repo.refresh.delay
+    mode: "0644"
+
+- name: Removing debug and source repos
+  become: true
+  community.general.zypper_repository:
+    name:  "{{ item }}"
+    state: absent
+  loop:
+    - repo-debug
+    - repo-source
+
+  # NOTE: repo=* can only be used with the runrefresh option.
+- name: Refreshing all zypper repos
+  become: true
+  community.general.zypper_repository:
+    repo:       "*"
+    runrefresh: true
+
+- name: Installing zypper subcommands
+  become: true
+  copy:
+    src:  "{{ item }}"
+    dest: /usr/lib/zypper/commands/{{ item }}
+    mode: "0755"
+  loop:
+    - zypper-history
+
