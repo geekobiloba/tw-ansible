@@ -1,0 +1,14 @@
+# tasks for zfs role
+
+- name: Importing filesystems repo
+  community.general.zypper_repository:
+    name: filesystems
+    repo: https://download.opensuse.org/repositories/filesystems/openSUSE_Tumbleweed/
+    auto_import_keys: true
+
+- name: Installing OpenZFS
+  package:
+    name:
+      - zfs
+#     - zfs-sudo
+

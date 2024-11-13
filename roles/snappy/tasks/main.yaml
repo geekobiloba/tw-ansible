@@ -1,0 +1,30 @@
+# tasks for snappy role
+
+- name: Adding snappy repo
+  community.general.zypper_repository:
+    name: snappy
+    repo: https://download.opensuse.org/repositories/system:/snappy/openSUSE_Tumbleweed
+    auto_import_keys: true
+
+- name: Installing snapd
+  package:
+    name:
+      - snapd
+
+- name: Starting & enabling snapd services
+  systemd_service:
+    name:    "{{ item }}"
+    state:   started
+    enabled: true
+    daemon_reload: true
+  loop:
+    - snapd
+    - snapd.apparmor
+
+- name: Installing snappy packages
+  when:
+    - snappy_pkg is defined
+    - snappy_pkg | length > 0
+  community.general.snap:
+    name: "{{ snappy_pkg }}"
+

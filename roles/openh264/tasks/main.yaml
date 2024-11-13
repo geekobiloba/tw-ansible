@@ -1,0 +1,40 @@
+# tasks for openh264 role
+#
+# See: https://en.opensuse.org/OpenH264
+#
+
+- name: Installing OpenH264 repo
+  get_url:
+    url:  http://codecs.opensuse.org/openh264/openSUSE_Tumbleweed/openSUSE:Factory:openh264:PUBLISHED.repo
+    dest: /etc/zypp/repos.d/repo-openh264.repo
+    mode: "0644"
+  register: openh264_repo
+
+- name: Refreshing OpenH264 repo
+  when: openh264_repo.changed
+  shell: >-
+    zypper renamerepo
+    openSUSE_Factory_openh264_PUBLISHED
+    repo-openh264
+    &&
+    zypper --non-interactive modifyrepo --enable --gpgcheck --refresh
+    repo-openh264
+    &&
+    zypper --non-interactive --gpg-auto-import-keys refresh
+    repo-openh264
+
+# The main URI
+# https://codecs.opensuse.org/openh264/openSUSE_Tumbleweed/*/*.rpm
+# is redirected to
+# http://ciscobinary.openh264.org/.rpm
+# thus HTTPS redirection to HTTP,
+# which is not supported by zypper,
+# so we need to download the RPM manually.
+
+# import_tasks cannot be used with loop,
+# use include_tasks instead.
+
+- name: Installing OpenH264 RPMs
+  include_tasks: install.yaml
+  loop: "{{ openh264_rpm }}"
+

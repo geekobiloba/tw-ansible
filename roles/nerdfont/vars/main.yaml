@@ -1,0 +1,20 @@
+# vars for nerdfont role
+
+nerdfont:
+  url:      https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.tar.xz
+  checksum: sha256:89b9023f3f6d5e4b8040022ff29b36faee440cf49015fda163215c922569b5f3
+  dir:      ~/.local/share/fonts/hacknerd
+  ttf:
+    - HackNerdFont-Bold.ttf
+    - HackNerdFont-BoldItalic.ttf
+    - HackNerdFont-Italic.ttf
+    - HackNerdFont-Regular.ttf
+    - HackNerdFontMono-Bold.ttf
+    - HackNerdFontMono-BoldItalic.ttf
+    - HackNerdFontMono-Italic.ttf
+    - HackNerdFontMono-Regular.ttf
+    - HackNerdFontPropo-Bold.ttf
+    - HackNerdFontPropo-BoldItalic.ttf
+    - HackNerdFontPropo-Italic.ttf
+    - HackNerdFontPropo-Regular.ttf
+

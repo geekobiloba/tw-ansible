@@ -1,0 +1,17 @@
+# tasks for pipx role
+
+- name: Installing pipx
+  pip:
+    name: pipx
+
+- name: Installing pipx packages
+  environment:
+    PIPX_HOME: ~/.pipx
+  block:
+
+    - name: Installing Ansible 9
+      community.general.pipx:
+        name:         ansible==9.12.0
+        suffix:       9
+        install_deps: true
+        

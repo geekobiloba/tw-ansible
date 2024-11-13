@@ -1,0 +1,14 @@
+# vars for openh264 role
+
+openh264_rpm:
+
+  - rpm:  https://codecs.opensuse.org/openh264/openSUSE_Tumbleweed/x86_64/libopenh264-7-2.3.1-2.suse1699.30.x86_64.rpm
+    cont: /usr/lib64/libopenh264.so.7
+
+  - rpm:  https://codecs.opensuse.org/openh264/openSUSE_Tumbleweed/x86_64/mozilla-openh264-2.3.1-2.suse1699.30.x86_64.rpm
+    cont: /usr/lib64/mozilla/plugins/gmp-gmpopenh264/system-installed/libgmpopenh264.so.7
+
+  - rpm:  https://codecs.opensuse.org/openh264/openSUSE_Tumbleweed/x86_64/gstreamer-plugin-openh264-1.22.2-1.suse1699.1.x86_64.rpm
+    cont: /usr/lib64/gstreamer-1.0/libgstopenh264.so
+
+

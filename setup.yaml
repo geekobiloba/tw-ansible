@@ -1,0 +1,140 @@
+- name: openSUSE Tumbleweed setup
+  hosts: all
+  vars:
+    admin_user: "{{
+        lookup('env', 'USER')
+        if
+          ansible_host == 'localhost'
+            and
+          ansible_connection == 'local'
+        else
+          ansible_user
+      }}"
+
+  roles:
+
+    - role: snapper
+      become: true
+      tags:
+        - snapper
+
+    - role: sudo
+      become: true
+      tags:
+        - sudo
+        - never
+
+    - role: zypper
+      tags:
+        - zypper
+
+    - role: pkg
+      tags:
+        - pkg
+
+    - role: flatpak
+      tags:
+        - flatpak
+
+    - role: touchegg
+      tags:
+        - touchegg
+
+    # nerdfont and openh264 roles are tagged "never" to prevent multiple run,
+    # as they are already listed as a dependency in other roles,
+    # and put here to let them portably called with their own tag.
+
+    - role: nerdfont
+      tags:
+        - nerdfont
+        - never
+
+    - role: openh264
+      become: true
+      tags:
+        - openh264
+        - never
+
+    - role: firefox_openh264
+      tags:
+        - firefox_openh264
+
+    - role: scrcpy
+      become: true
+      tags:
+        - scrcpy
+
+    - role: zsh
+      tags:
+        - zsh
+        - never
+
+    - role: powershell
+      become: true
+      tags:
+        - powershell
+
+    - role: yakuake
+      tags:
+        - yakuake
+
+    - role: homebin
+      tags:
+        - homebin
+
+    - role: wine
+      tags:
+        - wine
+        - never
+
+    - role: kde
+      tags:
+        - kde
+        - never
+
+    - role: zram
+      become: true
+      tags:
+        - zram
+
+    - role: podman
+      become: true
+      tags:
+        - podman
+
+    - role: cockpit
+      become: true
+      tags:
+        - cockpit
+
+    - role: snappy
+      when: false
+      become: true
+      tags:
+        - snappy
+
+    - role: zfs
+      become: true
+      tags:
+        - zfs
+
+    - role: kvm
+      become: true
+      tags:
+        - kvm
+
+    - role: virtualbox
+      become: true
+      tags:
+        - virtualbox
+
+    - role: clean
+      become: true
+      tags:
+        - clean
+
+    - role: debug
+      tags:
+        - debug
+        - never
+

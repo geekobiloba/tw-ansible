@@ -1,0 +1,19 @@
+# tasks for dynalist role
+
+- name: Creating temporary directory
+  tempfile:
+    state: directory
+  register: tmpdir
+
+- name: Downloading Dynalist archive
+  get_url:
+    url:      "{{ dynalist_url      }}"
+    dest:     "{{ dynalist_archive  }}"
+
+- name: Extracting Dynalist archive
+
+- name: Deleting temporary directory
+  file:
+    path:  tmpdir.path
+    state: absent
+

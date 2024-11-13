@@ -1,0 +1,45 @@
+# tasks for touchegg role
+
+- name: Touchégg
+  become: true
+  block:
+
+    - name: Installing Touchégg
+      community.general.zypper:
+        name:               touchegg
+        refresh:            true
+        disable_recommends: false
+
+    - name: Installing Touchégg config
+      copy:
+        src:  touchegg.conf
+        dest: ~/.config/touchegg/touchegg.conf
+        mode: "0644"
+
+    - name: Enabling Touchégg service
+      service:
+        name:    touchegg
+        state:   started
+        enabled: true
+
+- name: Touché
+  block:
+
+    - name: Installing Flatpak
+      become: true
+      community.general.zypper:
+        name:               flatpak
+        refresh:            true
+        disable_recommends: false
+
+    - name: Installing Flatpak remotes
+      community.general.flatpak_remote:
+        name:   flathub
+        method: system
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+    - name: Installing Touché
+      community.general.flatpak:
+        name:   com.github.joseexposito.touche
+        method: system
+

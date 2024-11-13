@@ -1,0 +1,23 @@
+# tasks for virtualbox role
+
+- name: Installing VirtualBox
+  package:
+    name:
+      - virtualbox
+     #- virtualbox-guest-tools
+     #- virtualbox-guest-desktop-icons
+
+- name: Adding admin user to vbox groups
+  user:
+    name:   "{{ admin_user }}"
+    groups: "{{ item       }}"
+    append: true
+  loop:
+    - vboxusers
+    - vboxsf
+
+- name: Enabling USB passthrough
+  become: false
+  file:
+    path: ~/.config/VirtualBox/enable
+

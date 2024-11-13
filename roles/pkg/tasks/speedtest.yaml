@@ -1,0 +1,88 @@
+# speedtest-cli tasks for pkg role
+
+- name: Ookla Speedtest CLI
+  become: true
+  block:
+
+    - name: Checking existing speedtest installation
+      stat:
+        path: /usr/local/bin/speedtest
+      register: speedtest
+
+    - name: Install Ookla Speedtest CLI
+      when: not speedtest.stat.exists
+      block:
+
+        - name: Creating temporary directory
+          tempfile:
+            state: directory
+          register: tmpdir
+
+        - name: Setting speedtest_tgz variable
+          set_fact:
+            speedtest_tgz: "{{
+                [
+                  tmpdir.path,
+                  (
+                      'ookla-speedtest-'
+                    + speedtest_version
+                    + '-linux-'
+                    + ansible_architecture
+                    + '.tgz'
+                  )
+                ] | path_join
+              }}"
+
+        - name: Downloading Ookla Speedtest CLI archive
+          get_url:
+            url:  >-
+              https://install.speedtest.net/app/cli/{{ speedtest_tgz | basename }}
+            dest: "{{ speedtest_tgz }}"
+
+        - name: Extracting Ookla Speedtest CLI archive
+          unarchive:
+            src:  "{{ speedtest_tgz }}"
+            dest: "{{ tmpdir.path   }}"
+            remote_src: true
+
+        - name: Installing Ookla Speedtest CLI
+          copy:
+            src:  "{{ [ tmpdir.path, item.src ] | path_join }}"
+            dest: "{{ item.dst  }}"
+            mode: "{{ item.perm }}"
+          loop:
+            - src:  speedtest
+              dst:  /usr/local/bin/speedtest
+              perm: "0755"
+
+            - src:  speedtest.5
+              dst:  /usr/local/man/man5/speedtest.5
+              perm: "0644"
+
+        - name: Deleting temporary directory
+          file:
+            path:  "{{ tmpdir.path }}"
+            state: absent
+
+- name: ca-certificate
+  become: true
+  block:
+
+    - name: Checking /etc/ssl/cert.pem existence
+      stat:
+        path: /etc/ssl/cert.pem
+      register: cert_pem
+
+    - name: Update ca-certificates
+      when: not cert_pem.stat.exists
+      block:
+
+        - name: Updating ca-certificates
+          shell: update-ca-certificates
+
+        - name: Symlinking /etc/ssl/ca-bundle.pem to /etc/ssl/cert.pem
+          file:
+            src:   /etc/ssl/ca-bundle.pem
+            dest:  /etc/ssl/cert.pem
+            state: link
+

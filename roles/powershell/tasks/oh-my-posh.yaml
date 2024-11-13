@@ -1,0 +1,33 @@
+# oh-my-posh tasks for powershell role
+
+- name: Checking preexisting Oh My Posh installation
+  stat:
+    path: ~/.local/bin/oh-my-posh
+  register: ohmyposh
+
+- name: Installing Oh My Posh
+  when: not ohmyposh.stat.exists
+  shell:
+    cmd:   curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin/
+    chdir: $HOME
+
+- name: Ensuring /home/bydefault/.config/powershell/ directory existence
+  file:
+    path:    /home/bydefault/.config/powershell/ 
+    mode:    "0755"
+    state:   directory
+    recurse: true
+  register: pwsh_dir
+
+- name: Debugging pwsh_dir
+  when: false
+  debug:
+    var: pwsh_dir
+
+- name: Installing PowerShell profile
+  copy:
+    src:  "{{ item }}"
+    dest: "{{ [ pwsh_dir.path, item ] | path_join }}"
+  loop:
+    - Microsoft.PowerShell_profile.ps1
+

@@ -1,0 +1,33 @@
+# dnstop tasks for pkg role
+
+# The community.general.zypper_repository has the following issue with Python 3.12.7
+#
+# AttributeError: 'ConfigParser' object has no attribute 'readfp'. Did you mean: 'read'?
+#
+# Therefore we add the repo manually, by downloading the repo file,
+# instead of using zypper, to keep it idempotent,
+# as re-adding an already exist repo will raise an error.
+
+- name: Installing server_dns repo
+  become: true
+  get_url:
+    url:   https://download.opensuse.org/repositories/server:dns/openSUSE_Tumbleweed/server:dns.repo
+    dest: /etc/zypp/repos.d/server:dns.repo
+    mode: "0644"
+  register: dnstop_repo
+
+- name: Refreshing server_dns repo
+  when: dnstop_repo.changed
+  become: true
+  shell: >-
+    zypper --non-interactive modifyrepo --enable --gpgcheck --refresh
+    server_dns
+    &&
+    zypper --non-interactive --gpg-auto-import-keys refresh
+    server_dns
+
+- name: Installing dnstop
+  become: true
+  package:
+    name: dnstop
+

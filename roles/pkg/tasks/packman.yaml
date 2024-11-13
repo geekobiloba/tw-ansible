@@ -1,0 +1,39 @@
+# packman tasks for pkg role
+
+- name: Checking packman repo existence
+  stat:
+    path: /etc/zypp/repos.d/packman.repo
+  register: packman_repo_file
+
+- name: Installing packman repo
+  when: not packman_repo_file.stat.exists
+  become: true
+  shell: >
+    zypper -n addrepo -cefgp 90
+    http://ftp.halifax.rwth-aachen.de/packman/suse/openSUSE_Tumbleweed/
+    packman
+  register: packman_repo
+
+- name: Refreshing packman repo
+  when: packman_repo.changed
+  become: true
+  shell: >
+    zypper -n --gpg-auto-import-keys refresh packman
+
+# --from option is not recognized by community.general.zypper module.
+- name: Installing packman packages
+  become: true
+  community.general.zypper:
+    disable_recommends:  false
+    allow_vendor_change: true
+    name:
+      - ffmpeg
+      - gstreamer-plugins-libav
+      - gstreamer-plugins-good
+      - gstreamer-plugins-bad
+      - gstreamer-plugins-ugly
+      - libavcodec
+      - vlc
+      - vlc-codec-gstreamer
+      - vlc-codecs
+

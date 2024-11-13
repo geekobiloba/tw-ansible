@@ -1,0 +1,5 @@
+# meta file for firefox_openh264 role
+
+dependencies:
+  - role: openh264
+

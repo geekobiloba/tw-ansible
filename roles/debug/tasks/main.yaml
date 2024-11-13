@@ -1,0 +1,18 @@
+# tasks for debug role
+
+- name: Debugging SHELL
+  when: false
+  debug:
+   var: ansible_user_shell | basename
+
+- name: Debugging find 1/2
+  find:
+    paths: ~/.mozilla/
+    recurse: true
+    pattern: "*.js"
+  register: mozilla_js
+
+- name: Debugging find 2/2
+  debug:
+    var: mozilla_js.files | map(attribute='path')
+

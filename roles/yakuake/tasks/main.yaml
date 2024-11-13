@@ -1,0 +1,40 @@
+# tasks for yakuake role
+
+- name: Installing Yakuake
+  become: true
+  package:
+    name: yakuake
+
+- name: Installing color scheme file
+  copy:
+    src:  Breeze.colorscheme
+    dest: ~/.local/share/konsole/Breeze.colorscheme
+
+- name: Installing Konsole profile
+  copy:
+    src:  myprofile.profile
+    dest: ~/.local/share/konsole/myprofile.profile
+
+- name: Installing Yakuake config file
+  copy:
+    src:  yakuakerc
+    dest: ~/.config/yakuakerc
+
+- name: Setting yakuake shortcut key
+  blockinfile:
+    path:  ~/.config/kglobalshortcutsrc
+    block: |
+      [yakuake]
+      _k_friendly_name=Yakuake
+      toggle-window-state=F12,F12,Open/Retract Yakuake
+    marker: "# {mark} yakuake"
+    backup: true
+    append_newline:  true
+    prepend_newline: true
+
+- name: Setting yakuake to start at login
+  copy:
+    src:  org.kde.yakuake.desktop
+    dest: ~/.config/autostart/org.kde.yakuake.desktop
+    mode: "0600"
+

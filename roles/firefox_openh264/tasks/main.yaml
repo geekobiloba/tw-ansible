@@ -1,0 +1,39 @@
+# tasks for firefox_openh264
+#
+# See: https://en.opensuse.org/OpenH264
+#
+
+- name: Checking ~/.mozilla/ directory existence
+  stat:
+    path: ~/.mozilla/
+  register: mozilla_dir
+
+- name: Set Firefox profiles
+  when:
+    - mozilla_dir.stat.exists
+    - mozilla_dir.stat.isdir
+  block:
+
+    - name: Finding Firefox profiles
+      find:
+        paths: ~/.mozilla/
+        recurse: true
+        pattern: "*.js"
+      register: ff_profile
+
+    - name: Setting Firefox profiles
+      blockinfile:
+        path:   "{{ [ item, 'user.js' ] | path_join }}"
+        mode:   "0600"
+        backup: true
+        create: true
+        marker: "// {mark} OpenH264"
+        block: |
+          user_pref("media.gmp-gmpopenh264.autoupdate", true);
+          user_pref("media.gmp-gmpopenh264.enabled", true);
+          user_pref("media.gmp-gmpopenh264.provider.enabled", true);
+          user_pref("media.peerconnection.video.h264_enabled", true);
+        append_newline:  true
+        prepend_newline: true
+      loop: "{{ ff_profile.files | map(attribute='path') | map('dirname') }}"
+

@@ -1,0 +1,24 @@
+# tasks for snapper role
+#
+# Sometimes, snapper is not configured,
+# so these tasks ensure its proper setup.
+#
+
+- name: Ensuring snapper packages are installed
+  community.general.zypper:
+    name:
+      - snapper
+      - grub2-snapper-plugin
+      - snapper-zypp-plugin
+      - yast2-snapper
+    refresh: true
+
+- name: Checking snapper config existence
+  find:
+    paths: /etc/snapper/configs
+  register: snapper_dir
+
+- name: Creating snapper config
+  when: snapper_dir.matched == 0
+  shell: snapper -c root create-config /
+

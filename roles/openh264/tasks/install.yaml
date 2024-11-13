@@ -1,0 +1,32 @@
+# install tasks for openh264 role
+
+- name: Checking a file provided by the RPM
+  stat:
+    path: "{{ item.cont }}"
+  register: checkfile
+
+- name: Install RPM
+  when: not checkfile.stat.exists
+  block:
+
+    - name: Creating temporary file
+      tempfile:
+        state:  file
+        suffix: .rpm
+      register: tmpfile
+
+    - name: Downloading {{ item.rpm }}
+      get_url:
+        url:   "{{ item.rpm }}"
+        dest:  "{{ tmpfile.path }}"
+        force: true
+
+    - name: Installing "{{ item.rpm }}"
+      community.general.zypper:
+        name: "{{ tmpfile.path }}"
+
+    - name: Deleting temporary file
+      file:
+        path:  "{{ tmpfile.path }}"
+        state: absent
+

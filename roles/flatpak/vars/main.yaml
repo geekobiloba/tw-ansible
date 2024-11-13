@@ -1,0 +1,22 @@
+# vars for flatpak role
+
+flatpak_pkg:
+
+  user:
+    - com.anydesk.Anydesk
+    - com.brave.Browser
+    - com.google.Chrome
+    - com.jgraph.drawio.desktop
+    - com.spotify.Client
+    - io.github.webcamoid.Webcamoid
+    - md.obsidian.Obsidian
+    - org.gimp.GIMP
+    - org.inkscape.Inkscape
+    - org.keepassxc.KeePassXC
+    - org.remmina.Remmina
+    - org.shotcut.Shotcut
+    - org.telegram.desktop
+
+  system:
+    - com.github.tchx84.Flatseal
+

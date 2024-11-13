@@ -1,0 +1,116 @@
+# vars for pkg role
+
+pkg:
+
+  general:
+    - bat
+    - ca-certificates
+    - cabextract
+    - chezmoi
+    - csvprintf
+    - dialog
+    - direnv
+    - duf
+    - expect
+    - eza
+    - fd
+    - gh
+    - git
+    - gnu_parallel
+    - jq
+    - make
+    - mozilla-nss-tools # provide certutil
+    - ncdu
+    - neovim
+    - neowofetch
+    - progress
+    - rclone
+    - ripgrep
+    - rsync
+    - scout
+    - screen
+    - sox
+    - tlrc # tldr client in Rust
+    - tree
+    - ydotool
+    - yq
+    - zellij
+   #- scout-command-not-found # conflicts with cnf, which is already included
+
+  system:
+    - cpustat
+    - htop
+    - iotop-c
+    - smemstat
+    - sysstat
+    - sysstat-isag # graph sysstat data
+   #- smem
+
+  network:
+    - aria2
+    - bind-utils
+    - curl
+    - ethtool
+    - httpie
+    - iftop
+    - iperf
+    - mtr
+    - netcat-openbsd
+    - nmap
+    - nmap-parse-output
+    - socat
+    - socat-extra
+    - tcpdump
+    - telnet
+    - wget
+    - whois
+
+  hardware:
+    - inxi
+    - libinput-tools # debug touchpad gesture
+    - sensors
+    - smartmontools
+    - tio # better minicom alternative
+
+  proglang:
+    - chezscheme
+    - go
+    - juliaup
+    - pyenv
+
+  doctool:
+    - ImageMagick
+    - pandoc
+    - poppler-tools
+    - qpdf
+
+  completion:
+    - bat-zsh-completion
+    - cpustat-bash-completion
+    - curl-zsh-completion
+    - ethtool-bash-completion
+    - eza-zsh-completion
+    - fd-zsh-completion
+    - gh-zsh-completion
+    - gnu_parallel-zsh-completion
+    - libsixel-zsh-completion
+    - progress-zsh-completion
+    - pyenv-zsh-completion
+    - rclone-zsh-completion
+    - ripgrep-zsh-completion
+    - smemstat-bash-completion
+    - whois-bash-completion
+    - yq-zsh-completion
+    - zellij-zsh-completion
+
+  browser:
+    - libsixel-utils
+    - w3m
+    - w3m-inline-image
+
+  kde:
+    - kclock
+    - kcolorchooser
+
+speedtest_version: 1.2.0
+

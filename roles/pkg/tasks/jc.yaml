@@ -1,0 +1,28 @@
+# jc tasks for pkg role
+
+- name: Installing jc
+  become: true
+  package:
+    name: jc
+
+# Install jc completion idempotently
+
+- name: Checking jc completion existence
+  stat:
+    path: /etc/zsh_completion.d/jc
+  register: jc_completion
+
+- name: Generate completion
+  when: not jc_completion.stat.exists
+  block:
+
+    - name: Ensuring /etc/zsh_completion.d/ directory existence
+      file:
+        path:  /etc/zsh_completion.d/
+        mode:  "0755"
+        state: directory
+
+    - name: Generating jc completion file
+      become: true
+      shell: jc -Z > /etc/zsh_completion.d/jc
+

@@ -1,0 +1,5 @@
+# meta file for yakuake role
+
+dependencies:
+  - role: nerdfont
+

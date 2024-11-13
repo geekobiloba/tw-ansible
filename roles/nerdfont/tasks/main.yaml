@@ -1,0 +1,56 @@
+# tasks for nerdfont role
+#
+# The checking still ugly and unsafe!
+#
+
+- name: Cheecking Nerd font directory existence
+  stat:
+    path: "{{ nerdfont.dir }}"
+  register: fontdir
+
+- name: Install Nerd font
+  when: not fontdir.stat.exists
+  block:
+
+    - name: Creating Nerd font directory
+      file:
+        path:    "{{ nerdfont.dir }}"
+        mode:    "0755"
+        state:   directory
+        recurse: true
+
+    - name: Creating temporary directory
+      tempfile:
+        state: directory
+      register: tempdir
+
+    - name: Setting nerdfont_archive variable
+      set_fact:
+        nerdfont_archive: "{{ [ tempdir.path, 'Hack.tar.xz' ] | path_join }}"
+
+    - name: Downloading Nerd font archive
+      get_url:
+        url:      "{{ nerdfont.url      }}"
+        dest:     "{{ nerdfont_archive  }}"
+        checksum: "{{ nerdfont.checksum }}"
+
+    - name: Extracting Nerd font archive
+      unarchive:
+        src:  "{{ nerdfont_archive }}"
+        dest: "{{ tempdir.path     }}"
+        remote_src: true
+
+    - name: Installing Nerd font files
+      copy:
+        src:  "{{ [  tempdir.path, item ] | path_join }}"
+        dest: "{{ [ nerdfont.dir,  item ] | path_join }}"
+      loop: "{{ nerdfont.ttf }}"
+
+    - name: Deleting temporary directory
+      file:
+        path: "{{ tempdir.path }}"
+        state: absent
+
+    - name: Updating font cache
+      shell: fc-cache
+

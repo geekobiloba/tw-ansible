@@ -1,0 +1,27 @@
+# tasks for flatpak role
+
+- name: Installing Flatpak
+  become: true
+  community.general.zypper:
+    name:    flatpak
+    refresh: true
+    disable_recommends: false
+
+- name: Installing Flatpak remotes
+  community.general.flatpak_remote:
+    name:   flathub
+    method: "{{ item }}"
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+  loop:
+    - user
+    - system
+
+- name: Installing Flatpak packages
+  community.general.flatpak:
+    name:   "{{ flatpak_pkg[item] }}"
+    method: "{{ item }}"
+  loop:
+    - user
+    - system
+
+
