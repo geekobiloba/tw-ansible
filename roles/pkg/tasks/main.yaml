@@ -1,0 +1,78 @@
+# tasks for pkg role
+
+- name: Installing global packages
+  when:
+    - pkg is defined
+    - pkg[item] is defined
+  become: true
+  package:
+    name: "{{ pkg[item] }}"
+  loop:
+    - general
+    - system
+    - network
+    - hardware
+    - proglang
+    - doctool
+    - completion
+    - browser
+    - kde
+
+- name: Removing packages
+  when:
+    - pkg is defined
+    - pkg.remove is defined
+  become: true
+  community.general.zypper:
+    name:       "{{ pkg.remove }}"
+    state:      absent
+    clean_deps: true
+
+- name: flatpak
+  block:
+
+    - name: Installing flatpak remote
+      when:
+        - pkg is defined
+        - pkg.flatpak is defined
+        - pkg.flatpak[item] is defined
+      community.general.flatpak_remote:
+        name:            flathub
+        method:          "{{ item }}"
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+      loop:
+        - user
+        - system
+
+    - name: Installing flatpak packages
+      when:
+        - pkg is defined
+        - pkg.flatpak is defined
+        - pkg.flatpak[item] is defined
+      community.general.flatpak:
+        name:   "{{ pkg.flatpak[item] }}"
+        method: "{{ item }}"
+      loop:
+        - user
+        - system
+
+- name: Installing packman packages
+  tags:
+    - packman
+  import_tasks: packman.yaml
+
+- name: Installing dnstop
+  tags:
+    - dnstop
+  import_tasks: dnstop.yaml
+
+- name: Installing jc
+  tags:
+    - jc
+  import_tasks: jc.yaml
+
+- name: Installing Ookla Speedtest CLI
+  tags:
+    - speedtest
+  import_tasks: speedtest.yaml
+

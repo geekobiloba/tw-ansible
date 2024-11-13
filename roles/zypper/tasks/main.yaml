@@ -1,0 +1,40 @@
+# tasks for zypper role
+
+  # See: /etc/zypp/zypp.conf
+- name: Setting zypper autorefresh delay
+  become: true
+  copy:
+    src:  repo.refresh.delay
+    dest: /etc/zypp/vars.d/repo.refresh.delay
+    mode: "0644"
+
+- name: Removing debug and source repos
+  become: true
+  community.general.zypper_repository:
+    name:  "{{ item }}"
+    state: absent
+  loop:
+    - repo-debug
+    - repo-source
+
+- name: Refreshing all zypper repos
+  import_tasks: refresh.yaml
+
+- name: zypper subcommand
+  become: true
+  block:
+
+    - name: Ensuring /usr/lib/zypper/commands/ directory existence
+      file:
+        path:  /usr/lib/zypper/commands/
+        mode:  "0755"
+        state: directory
+
+    - name: Installing zypper subcommands
+      copy:
+        src:  "{{ item }}"
+        dest: /usr/lib/zypper/commands/{{ item }}
+        mode: "0755"
+      loop:
+        - zypper-history
+

@@ -1,0 +1,35 @@
+# tasks for zsh role
+
+- name: Installing zsh & fzf
+  become: true
+  package:
+    name:
+      - zsh
+      - fzf
+      - fzf-zsh-integration
+
+- name: Setting zsh as user login shell
+  become: true
+  user:
+    name:  "{{ admin_user }}"
+    shell: /bin/zsh
+
+- name: Setting system-wide aliases
+  become: true
+  copy:
+    src:  aliases.sh
+    dest: "{{ item }}"
+  loop:
+    - /etc/zsh.zshrc.local
+    - /etc/profile.d/aliases.sh
+
+- name: Installing zshrc
+  tags:
+    - zshrc
+  copy:
+    src:  zshrc
+    dest: ~/.zshrc
+
+- name: Installing Oh My Zsh
+  import_tasks: oh-my-zsh.yaml
+

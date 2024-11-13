@@ -1,0 +1,6 @@
+# meta file for powershell role
+
+dependencies:
+  - role: zsh
+  - role: nerdfont
+

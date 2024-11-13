@@ -1,0 +1,6 @@
+# meta file for cockpit role
+
+dependencies:
+  - role: kvm
+  - role: podman
+

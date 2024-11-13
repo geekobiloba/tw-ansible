@@ -1,0 +1,5 @@
+# meta file for homebin role
+
+dependencies:
+  - role: zsh
+

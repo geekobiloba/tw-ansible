@@ -1,0 +1,12 @@
+# vars for desktop role
+
+file_list:
+  - /home/bydefault/.config/plasmashellrc
+  - /home/bydefault/.config/gtkrc
+  - /home/bydefault/.config/gtk-4.0/settings.ini
+  - /home/bydefault/.config/xsettingsd/xsettingsd.conf
+  - /home/bydefault/.config/gtk-3.0/settings.ini
+  - /home/bydefault/.config/kdedefaults/plasmarc
+  - /home/bydefault/.config/kdedefaults/kdeglobals
+  - /home/bydefault/.config/kdedefaults/kwinrc
+
