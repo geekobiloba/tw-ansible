@@ -1,0 +1,13 @@
+# vars for kde role
+
+file_list:
+  - ~/.config/gtk-3.0/settings.ini
+  - ~/.config/gtk-4.0/settings.ini
+  - ~/.config/gtkrc
+  - ~/.config/kdedefaults/kdeglobals
+  - ~/.config/kdedefaults/kwinrc
+  - ~/.config/kdedefaults/plasmarc
+  - ~/.config/plasma-org.kde.plasma.desktop-appletsrc
+  - ~/.config/plasmashellrc
+  - ~/.config/xsettingsd/xsettingsd.conf
+

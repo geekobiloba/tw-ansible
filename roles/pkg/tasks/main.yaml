@@ -1,0 +1,50 @@
+# tasks for pkg role
+
+- name: Installing zypper packages
+  when:
+    - pkg is defined
+    - pkg[item] is defined
+  become: true
+  package:
+    name: "{{ pkg[item] }}"
+  loop:
+    - general
+    - system
+    - network
+    - hardware
+    - proglang
+    - doctool
+    - completion
+    - browser
+    - kde
+
+- name: Removing zypper packages
+  when:
+    - pkg is defined
+    - pkg.remove is defined
+  become: true
+  community.general.zypper:
+    name:       "{{ pkg.remove }}"
+    state:      absent
+    clean_deps: true
+
+- name: Installing packman packages
+  tags:
+    - packman
+  import_tasks: packman.yaml
+
+- name: Installing dnstop
+  tags:
+    - dnstop
+  import_tasks: dnstop.yaml
+
+- name: Installing jc
+  tags:
+    - jc
+  import_tasks: jc.yaml
+
+- name: Installing Ookla Speedtest CLI
+  tags:
+    - speedtest
+  import_tasks: speedtest.yaml
+

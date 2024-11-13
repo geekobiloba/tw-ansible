@@ -1,0 +1,6 @@
+# tasks for clean role
+
+- name: Cleaning zypper cache
+  changed_when: false
+  shell: zypper cc
+

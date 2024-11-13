@@ -1,0 +1,11 @@
+# vars for dynalist role
+
+dynalist_url: >-
+  {%- if ansible_system == "Linux" -%}
+    {%- if ansible_architecture == "x86_64" -%}
+      "https://dynalist.io/standalone/download?file=dynalist.tar.gz"
+    {%- if ansible_architecture is match("i[36]86") -%}
+      "https://dynalist.io/standalone/download?file=dynalist-32.tar.gz"
+    {%- end -%}
+  {%- end -%}
+

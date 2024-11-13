@@ -1,0 +1,15 @@
+# tasks for podman role
+
+- name: Installing podman packages
+  package:
+    name:
+      - podman
+      - podman-docker
+      - skopeo
+      - skopeo-zsh-completion
+
+- name: Installing /etc/containers/nodocker
+  file:
+    path:  /etc/containers/nodocker
+    state: touch
+

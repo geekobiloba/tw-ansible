@@ -1,0 +1,9 @@
+# refresh tasks for zypper role
+
+# repo=* can only be used with the runrefresh option.
+- name: Refreshing all zypper repos
+  become: true
+  community.general.zypper_repository:
+    repo:       "*"
+    runrefresh: true
+

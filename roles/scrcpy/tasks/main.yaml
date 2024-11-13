@@ -1,0 +1,22 @@
+# tasks for scrcpy role
+
+- name: Installing hardware repo
+  get_url:
+    url:  https://download.opensuse.org/repositories/hardware/openSUSE_Tumbleweed/hardware.repo
+    dest: /etc/zypp/repos.d/hardware.repo
+    mode: "0644"
+  register: hardware_repo
+
+- name: Refreshing hardware repo
+  when: hardware_repo.changed
+  shell: >-
+    zypper --non-interactive modifyrepo --enable --gpgcheck --refresh
+    hardware
+    &&
+    zypper --non-interactive --gpg-auto-import-keys refresh
+    hardware
+
+- name: Installing scrcpy
+  package:
+    name: scrcpy
+

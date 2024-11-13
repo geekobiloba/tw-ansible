@@ -1,0 +1,24 @@
+# tasks for kvm role
+
+- name: Installing KVM packages
+  community.general.zypper:
+    name:
+      - kvm_server
+      - kvm_tools
+    type:    pattern
+    refresh: true
+    disable_recommends: false
+
+- name: Creating KVM default bridge
+  copy:
+    src:  /usr/share/libvirt/networks/default.xml
+    dest: /etc/libvirt/qemu/networks/default.xml
+    mode: "0600"
+    remote_src: true
+
+- name: Setting KVM default bridge autostart
+  file:
+    src:   /etc/libvirt/qemu/networks/default.xml
+    dest:  /etc/libvirt/qemu/networks/autostart/default.xml
+    state: link
+
